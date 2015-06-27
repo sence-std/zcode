@@ -32,7 +32,7 @@ public class GenaratorLogFile {
             // 打开一个写文件器，构造函数中的第二个参数true表示以追加形式写文件
             FileWriter writer = new FileWriter("F:\\nginxlog\\access_log2.log", true);
             Random r = new Random();
-            for (int i = 0; i < 40000000; i++) {
+            for (int i = 0; i < 100000000; i++) {
                 int i1 = r.nextInt(254) + 1;
                 int i2 = r.nextInt(254) + 1;
                 int i3 = r.nextInt(254) + 1;

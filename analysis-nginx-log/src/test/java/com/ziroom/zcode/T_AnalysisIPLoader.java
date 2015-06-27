@@ -34,7 +34,7 @@ public class T_AnalysisIPLoader {
     @Test
     public void testLoadIP() throws URISyntaxException, IOException {
         AnalysisIPLoader loader = new AnalysisIPLoader();
-        Map<String, String> map = loader.loadAnalysisIP("D:\\work\\workspace-new\\zcode\\analysis-nginx-log\\src\\test\\resources\\ip.txt");
+        Map<String, String> map = loader.loadAnalysisIP("F:\\nginxlog\\ip.txt");
         System.out.print(map);
     }
 

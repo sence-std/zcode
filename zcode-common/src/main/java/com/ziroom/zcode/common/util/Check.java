@@ -8,6 +8,7 @@
  */
 package com.ziroom.zcode.common.util;
 
+import java.io.File;
 import java.util.Collection;
 
 /**
@@ -66,6 +67,30 @@ public class Check {
             return true;
         }
         if (collect.contains(null)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isFileExist(String path){
+        if(isNull(path)) return false;
+        File file = new File(path);
+        if(!file.exists()) return false;
+        file = null;
+        return true;
+    }
+
+    /**
+     * 判断是否是空数组
+     *
+     * @param objs
+     * @return
+     */
+    public static boolean isEmptyArray(Object[] objs) {
+        if (isNull(objs)) {
+            return true;
+        }
+        if (objs.length == 0) {
             return true;
         }
         return false;
