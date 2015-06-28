@@ -6,7 +6,7 @@
  * <p/>
  * Copyright 2015 ziroom
  */
-package com.ziroom.zcode.bigfile;
+package com.ziroom.zcode.bigfile.handler;
 
 /**
  * <p></p>
@@ -23,8 +23,6 @@ package com.ziroom.zcode.bigfile;
  */
 public class BitArray {
 
-    private int[] bits = null;
-    private int length;
     //用于设置或者提取int类型的数据的某一位(bit)的值时使用
     private final static int[] bitValue = {
             0x80000000,//10000000 00000000 00000000 00000000
@@ -60,6 +58,8 @@ public class BitArray {
             0x00000002,//00000000 00000000 00000000 00000010
             0x00000001 //00000000 00000000 00000000 00000001
     };
+    private int[] bits = null;
+    private int length;
 
     public BitArray(int length) {
         if (length < 0) {

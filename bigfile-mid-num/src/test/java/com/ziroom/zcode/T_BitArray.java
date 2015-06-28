@@ -8,12 +8,12 @@
  */
 package com.ziroom.zcode;
 
-import com.ziroom.zcode.bigfile.BitArray;
+import com.ziroom.zcode.bigfile.handler.BitArray;
 import org.junit.Test;
 
 /**
  * <p></p>
- *
+ * <p/>
  * <PRE>
  * <BR>	ÐÞ¸Ä¼ÇÂ¼
  * <BR>-----------------------------------------------
@@ -21,16 +21,16 @@ import org.junit.Test;
  * </PRE>
  *
  * @author sence
- * @since 1.0
  * @version 1.0
+ * @since 1.0
  */
 public class T_BitArray {
 
     @Test
-    public void test(){
+    public void test() {
         int i = Integer.MAX_VALUE;
         BitArray bitArray = new BitArray(i);
-        bitArray.setBit(123433,1);
+        bitArray.setBit(123433, 1);
         bitArray.setBit(123434, 1);
 
         System.out.println(bitArray.getBit(123433));
@@ -40,11 +40,16 @@ public class T_BitArray {
 
 
     @Test
-    public void test01(){
-        for(int i=0;i<Integer.MAX_VALUE;i++){
-            if(i == Integer.MAX_VALUE>>1 ){
+    public void test01() {
+        for (int i = 0; i < Integer.MAX_VALUE; i++) {
+            if (i == Integer.MAX_VALUE >> 1) {
                 System.out.println(i);
             }
         }
+    }
+
+    @Test
+    public void test02() {
+        System.out.println(Math.floor(2.3));
     }
 }

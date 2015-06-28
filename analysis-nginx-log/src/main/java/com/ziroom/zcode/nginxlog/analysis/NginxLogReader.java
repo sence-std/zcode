@@ -91,8 +91,6 @@ public class NginxLogReader {
                 totalReadTimes--;
                 readTimes++;
             }
-
-
             System.out.println(System.currentTimeMillis() - t1);
         } finally {
             if (!Check.isNull(fileChannel)) {
@@ -150,6 +148,12 @@ public class NginxLogReader {
         }
     }
 
+    /**
+     * 处理遗留byte合并问题
+     * @param from
+     * @param to
+     * @return
+     */
     public byte[] mergeArray(byte[] from, byte[] to) {
         int fs = from.length;
         if (fs == 0) {
