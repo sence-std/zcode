@@ -13,8 +13,8 @@ public class T_FileGenertor {
     @Test
     public void testGenertor() throws IOException {
         FileGenertor fileGenertor = new FileGenertor();
-        String[] files = new String[20];
-        String fileDir = "E:\\intfile\\";
+        String[] files = new String[2];
+        String fileDir = "F:\\intfile\\";
         for (int i = 0; i < files.length; i++) {
             files[i] = fileDir.concat("file").concat(String.valueOf(i)).concat(".txt");
         }

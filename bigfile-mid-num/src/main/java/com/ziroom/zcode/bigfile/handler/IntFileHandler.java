@@ -26,7 +26,7 @@ public class IntFileHandler {
      * 计算中位数
      */
     public long sumMidNum(String[] files) throws ExecutionException, InterruptedException {
-        //long t1 = System.currentTimeMillis();
+        long t1 = System.currentTimeMillis();
         ExecutorService executorService = Executors.newFixedThreadPool(poolSize);
         Future<Boolean>[] futures = new Future[files.length];
         for (int i = 0; i < files.length; i++) {
@@ -40,7 +40,7 @@ public class IntFileHandler {
             return -1;
         }
         executorService.shutdown();
-        //System.out.println("执行完排序:" + (System.currentTimeMillis() - t1));
+        System.out.println("执行完排序:" + (System.currentTimeMillis() - t1));
         int count = 0;
         for (int i = 0; i < Integer.MAX_VALUE; i++) {
             if (bitArray.getBit(i) == 1) {

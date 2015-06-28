@@ -63,11 +63,12 @@ public class ReaderIntFileWorker implements Callable<Boolean> {
 
     private void handlerByteBuffer(ByteBuffer byteBuffer) throws IOException {
         byteBuffer.flip();
-        //long t1 = System.currentTimeMillis();
         byte[] bytes = new byte[byteBuffer.remaining()];
         byteBuffer.get(bytes);
         byteBuffer.clear();
-        for ( int i = 0;i < bytes.length; i++) {
+        String str = new String(bytes);
+        String[] digits = str.split("\\n");
+        for ( int i = 0;i < digits.length; i++) {
             if (bytes[i] == '\n') {
                 int digit = Integer.valueOf(new String(byteWrap.getBytes(),0, byteWrap.size()).trim());
                 bitArray.setBit(digit, 1);
@@ -80,6 +81,5 @@ public class ReaderIntFileWorker implements Callable<Boolean> {
             }
 
         }
-        //System.out.println(file + "-1:" + (System.currentTimeMillis() - t1));
     }
 }
