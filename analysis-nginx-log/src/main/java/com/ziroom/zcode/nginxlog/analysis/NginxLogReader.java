@@ -16,12 +16,12 @@ import java.nio.channels.FileChannel;
 import java.util.Map;
 
 /**
- * <p>读取nginx日志</p>
+ * <p>锟斤拷取nginx锟斤拷志</p>
  * <p/>
  * <PRE>
- * <BR>	修改记录
+ * <BR>	锟睫改硷拷录
  * <BR>-----------------------------------------------
- * <BR>	修改日期			修改人			修改内容
+ * <BR>	锟睫革拷锟斤拷锟斤拷			锟睫革拷锟斤拷			锟睫革拷锟斤拷锟斤拷
  * </PRE>
  *
  * @author sence
@@ -59,7 +59,7 @@ public class NginxLogReader {
     }
 
     /**
-     * 从logFile中读取数据并放入到队列
+     * 锟斤拷logFile锟叫讹拷取锟斤拷锟捷诧拷锟斤拷锟诫到锟斤拷锟斤拷
      *
      * @param logFilePath
      */
@@ -74,7 +74,6 @@ public class NginxLogReader {
             }
             RandomAccessFile fileAccess = new RandomAccessFile(logFilePath, "r");
             fileChannel = fileAccess.getChannel();
-            //每次读取20MB
             int _readSize = this.readSize;
             long fileSize = fileChannel.size();
             long totalReadTimes = (long) Math.ceil(fileSize / this.readSize);
@@ -111,7 +110,7 @@ public class NginxLogReader {
     }
 
     /**
-     * 处理ByteBuffer
+     * 锟斤拷锟斤拷ByteBuffer
      *
      * @param byteBuffer
      */
@@ -137,7 +136,7 @@ public class NginxLogReader {
     }
 
     /**
-     * 处理IP
+     * 锟斤拷锟斤拷IP
      *
      * @param str
      */
@@ -149,7 +148,7 @@ public class NginxLogReader {
     }
 
     /**
-     * 处理遗留byte合并问题
+     * 锟斤拷锟斤拷锟斤拷锟斤拷byte锟较诧拷锟斤拷锟斤拷
      * @param from
      * @param to
      * @return

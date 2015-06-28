@@ -8,18 +8,20 @@
  */
 package com.ziroom.zcode;
 
+import com.ziroom.zcode.nginxlog.analysis.NginxLogHandler;
 import com.ziroom.zcode.nginxlog.analysis.NginxLogReader;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 /**
  * <p></p>
  * <p/>
  * <PRE>
- * <BR>	ÐÞ¸Ä¼ÇÂ¼
+ * <BR>	ï¿½Þ¸Ä¼ï¿½Â¼
  * <BR>-----------------------------------------------
- * <BR>	ÐÞ¸ÄÈÕÆÚ			ÐÞ¸ÄÈË			ÐÞ¸ÄÄÚÈÝ
+ * <BR>	ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½			ï¿½Þ¸ï¿½ï¿½ï¿½			ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½
  * </PRE>
  *
  * @author sence
@@ -32,6 +34,14 @@ public class T_NginxLogReader {
     public void testLogReader() throws IOException {
         NginxLogReader nginxLogReader = new NginxLogReader();
         nginxLogReader.readFromLogFile("F:\\nginxlog\\access_log2.log","F:\\nginxlog\\result.txt","F:\\nginxlog\\ip.txt");
+    }
+
+    @Test
+    public void testNginxLog() throws InterruptedException, ExecutionException, IOException {
+        long t1 = System.currentTimeMillis();
+        NginxLogHandler handler = new NginxLogHandler();
+        handler.handlerNginxLog("E:\\nginxlog\\access_log.log");
+        System.out.println(System.currentTimeMillis()-t1);
     }
 
 }

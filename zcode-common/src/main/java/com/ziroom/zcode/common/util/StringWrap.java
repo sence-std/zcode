@@ -12,9 +12,9 @@ package com.ziroom.zcode.common.util;
  * <p></p>
  *
  * <PRE>
- * <BR>	ĞŞ¸Ä¼ÇÂ¼
+ * <BR>	ï¿½Ş¸Ä¼ï¿½Â¼
  * <BR>-----------------------------------------------
- * <BR>	ĞŞ¸ÄÈÕÆÚ			ĞŞ¸ÄÈË			ĞŞ¸ÄÄÚÈİ
+ * <BR>	ï¿½Ş¸ï¿½ï¿½ï¿½ï¿½ï¿½			ï¿½Ş¸ï¿½ï¿½ï¿½			ï¿½Ş¸ï¿½ï¿½ï¿½ï¿½ï¿½
  * </PRE>
  *
  * @author sence
@@ -25,27 +25,37 @@ public class StringWrap {
 
     private StringBuffer stringBuffer;
 
+    public StringWrap(){
+        stringBuffer = new StringBuffer();
+    }
     /**
-     * Ìí¼Óstr
+     * æ·»åŠ str
      * @param str
      */
-    public void addString(String str){
-        stringBuffer.append(str);
+    public String addString(String str){
+       return stringBuffer.append(str).toString();
     }
 
     /**
-     * Çå¿Õ
+     * å–å¾—å€¼
+     * @return
+     */
+    public String getString(){
+        return stringBuffer.toString();
+    }
+    /**
+     * æ¸…ç©º
      */
     public void clear(){
         stringBuffer = new StringBuffer();
     }
 
     /**
-     * ÊÇ·ñÎª¿Õ
+     * åˆ¤ç©º
      * @return
      */
     public boolean isEmpty(){
-        return stringBuffer.length() == 0;
+        return stringBuffer==null || stringBuffer.length() == 0;
     }
 
 }

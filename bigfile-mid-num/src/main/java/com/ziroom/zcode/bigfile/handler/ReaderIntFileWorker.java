@@ -2,6 +2,7 @@ package com.ziroom.zcode.bigfile.handler;
 
 import com.ziroom.zcode.common.util.ByteWrap;
 import com.ziroom.zcode.common.util.Check;
+import com.ziroom.zcode.common.util.StringWrap;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.nio.channels.FileChannel;
 import java.util.concurrent.Callable;
 
 /**
- * ¶ÁÈ¡ÎÄ¼þÐ´½øµ½Î»ÏòÁ¿
+ * ï¿½ï¿½È¡ï¿½Ä¼ï¿½Ð´ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½
  * Created by sence on 2015/6/27.
  */
 public class ReaderIntFileWorker implements Callable<Boolean> {
@@ -28,7 +29,7 @@ public class ReaderIntFileWorker implements Callable<Boolean> {
     }
 
     /**
-     * ´¦ÀíÎÄ¼þ
+     * ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
      * @return
      * @throws Exception
      */
@@ -48,6 +49,7 @@ public class ReaderIntFileWorker implements Callable<Boolean> {
             MappedByteBuffer mappedByteBuffer = null;
             ByteBuffer byteBuffer = ByteBuffer.allocate(DEFAULT_SIZE);
             while (totalReadTimes > -1) {
+                long t1 = System.currentTimeMillis();
                 cursorPoint = readTimes * _readSize;
                 if (totalReadTimes == 0) {
                     _readSize = (int) (fileSize - cursorPoint);
@@ -57,6 +59,7 @@ public class ReaderIntFileWorker implements Callable<Boolean> {
                 handlerByteBuffer(byteBuffer);
                 totalReadTimes--;
                 readTimes++;
+                System.out.println(file+"-"+(System.currentTimeMillis()-t1));
             }
             return true;
         } finally {
@@ -67,35 +70,28 @@ public class ReaderIntFileWorker implements Callable<Boolean> {
     }
 
     /**
-     * ´¦ÀíbyteBuffer
+     * ï¿½ï¿½ï¿½ï¿½byteBuffer
      * @param byteBuffer
      * @throws IOException
      */
     private void handlerByteBuffer(ByteBuffer byteBuffer) throws IOException {
         byteBuffer.flip();
+        long t1 = System.currentTimeMillis();
         byte[] bytes = new byte[byteBuffer.remaining()];
         byteBuffer.get(bytes);
         byteBuffer.clear();
-        String str = new String(bytes);
-        String[] digits = str.split("\\n");
-        for ( int i = 0;i < digits.length; i++) {
-            if(i==0) {
-
-
+        for ( int i = 0;i < bytes.length; i++) {
+            if (bytes[i] == '\n') {
+                int digit = Integer.valueOf(new String(byteWrap.getBytes(),0, byteWrap.size()).trim());
+                bitArray.setBit(digit, 1);
+                byteWrap.clear();
             }else{
-
+                if(Check.isNull(byteWrap)){
+                    byteWrap = new ByteWrap(32);
+                }
+                byteWrap.addByte(bytes[i]);
             }
-//            digits[i]
-//                int digit = Integer.valueOf(new String(byteWrap.getBytes(),0, byteWrap.size()).trim());
-//                bitArray.setBit(digit, 1);
-//                byteWrap.clear();
-//            }else{
-//                if(Check.isNull(byteWrap)){
-//                    byteWrap = new ByteWrap(32);
-//                }
-//                byteWrap.addByte(bytes[i]);
-//            }
-
         }
+        System.out.println("--"+(System.currentTimeMillis()-t1));
     }
 }
