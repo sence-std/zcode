@@ -27,6 +27,11 @@ public class ReaderIntFileWorker implements Callable<Boolean> {
         this.file = file;
     }
 
+    /**
+     * 处理文件
+     * @return
+     * @throws Exception
+     */
     public Boolean call() throws Exception {
         FileChannel fileChannel = null;
         try {
@@ -61,6 +66,11 @@ public class ReaderIntFileWorker implements Callable<Boolean> {
         }
     }
 
+    /**
+     * 处理byteBuffer
+     * @param byteBuffer
+     * @throws IOException
+     */
     private void handlerByteBuffer(ByteBuffer byteBuffer) throws IOException {
         byteBuffer.flip();
         byte[] bytes = new byte[byteBuffer.remaining()];
@@ -69,16 +79,22 @@ public class ReaderIntFileWorker implements Callable<Boolean> {
         String str = new String(bytes);
         String[] digits = str.split("\\n");
         for ( int i = 0;i < digits.length; i++) {
-            if (bytes[i] == '\n') {
-                int digit = Integer.valueOf(new String(byteWrap.getBytes(),0, byteWrap.size()).trim());
-                bitArray.setBit(digit, 1);
-                byteWrap.clear();
+            if(i==0) {
+
+
             }else{
-                if(Check.isNull(byteWrap)){
-                    byteWrap = new ByteWrap(32);
-                }
-                byteWrap.addByte(bytes[i]);
+
             }
+//            digits[i]
+//                int digit = Integer.valueOf(new String(byteWrap.getBytes(),0, byteWrap.size()).trim());
+//                bitArray.setBit(digit, 1);
+//                byteWrap.clear();
+//            }else{
+//                if(Check.isNull(byteWrap)){
+//                    byteWrap = new ByteWrap(32);
+//                }
+//                byteWrap.addByte(bytes[i]);
+//            }
 
         }
     }
