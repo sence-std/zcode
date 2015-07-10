@@ -27,22 +27,42 @@ import java.util.Random;
  */
 public class GenaratorLogFile {
 
+//    public static void main(String[] args) {
+//        try {
+//            FileWriter writer = new FileWriter("E:\\nginxlog\\access_log.log", true);
+//            Random r = new Random();
+//            for (int i = 0; i < 30000000; i++) {
+//                int i1 = r.nextInt(254) + 1;
+//                int i2 = r.nextInt(254) + 1;
+//                int i3 = r.nextInt(254) + 1;
+//                int i4 = r.nextInt(254) + 1;
+//                String content = "" + i1 + "." + i2 + "." + i3 + "." + i4 + " - - [14/Jun/2015:05:00:05 +0800] 'GET /ops/?action=getServerSystemTraffic&create=1&server=172.16.4.197 HTTP/1.1' 200";
+//                writer.write(content + "\n");
+//            }
+//            writer.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+
     public static void main(String[] args) {
         try {
-            FileWriter writer = new FileWriter("E:\\nginxlog\\access_log.log", true);
+            FileWriter writer = new FileWriter("F:\\nginxlog\\ip.txt", true);
             Random r = new Random();
-            for (int i = 0; i < 30000000; i++) {
+            for (int i = 0; i < 10000; i++) {
                 int i1 = r.nextInt(254) + 1;
                 int i2 = r.nextInt(254) + 1;
                 int i3 = r.nextInt(254) + 1;
                 int i4 = r.nextInt(254) + 1;
-                String content = "" + i1 + "." + i2 + "." + i3 + "." + i4 + " - - [14/Jun/2015:05:00:05 +0800] 'GET /ops/?action=getServerSystemTraffic&create=1&server=172.16.4.197 HTTP/1.1' 200";
+                String content = i1 + "." + i2 + "." + i3 + "." + i4;
                 writer.write(content + "\n");
             }
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
 }

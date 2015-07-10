@@ -40,7 +40,7 @@ public class T_NginxLogReader {
     public void testNginxLog() throws InterruptedException, ExecutionException, IOException {
         long t1 = System.currentTimeMillis();
         NginxLogHandler handler = new NginxLogHandler();
-        handler.handlerNginxLog("E:\\nginxlog\\access_log.log");
+        handler.handlerNginxLog("F:\\nginxlog\\access_log2.log",4,"F:\\nginxlog\\ip.txt","F:\\nginxlog\\result.txt");
         System.out.println(System.currentTimeMillis()-t1);
     }
 

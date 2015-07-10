@@ -8,6 +8,7 @@
  */
 package com.ziroom.zcode.nginxlog.analysis;
 
+import com.ziroom.zcode.common.util.ByteWrap;
 import com.ziroom.zcode.common.util.Check;
 
 import java.io.*;
@@ -16,12 +17,12 @@ import java.nio.channels.FileChannel;
 import java.util.Map;
 
 /**
- * <p>��ȡnginx��־</p>
+ * <p>锟斤拷取nginx锟斤拷志</p>
  * <p/>
  * <PRE>
- * <BR>	�޸ļ�¼
+ * <BR>	锟睫改硷拷录
  * <BR>-----------------------------------------------
- * <BR>	�޸�����			�޸���			�޸�����
+ * <BR>	锟睫革拷锟斤拷锟斤拷			锟睫革拷锟斤拷			锟睫革拷锟斤拷锟斤拷
  * </PRE>
  *
  * @author sence
@@ -38,7 +39,7 @@ public class NginxLogReader {
 
     private Map<String, String> ipMap;
 
-    private byte[] leftBytes;
+    private ByteWrap byteWrap;
 
     public NginxLogReader() throws IOException {
         this(DEFAULT_CHARSET, DEFAULT_READ_SIZE);
@@ -59,12 +60,11 @@ public class NginxLogReader {
     }
 
     /**
-     * ��logFile�ж�ȡ���ݲ����뵽����
+     * 从文件读取数据 以及IP数据，结果写到文件
      *
      * @param logFilePath
      */
     public void readFromLogFile(String logFilePath,String resultPath,String findIpFilePath) throws IOException {
-        long t1 = System.currentTimeMillis();
         initFindIp(findIpFilePath);
         FileChannel fileChannel = null;
         FileWriter fileWriter = new FileWriter(resultPath,true);
@@ -90,7 +90,6 @@ public class NginxLogReader {
                 totalReadTimes--;
                 readTimes++;
             }
-            System.out.println(System.currentTimeMillis() - t1);
         } finally {
             if (!Check.isNull(fileChannel)) {
                 fileChannel.close();
@@ -110,7 +109,7 @@ public class NginxLogReader {
     }
 
     /**
-     * ����ByteBuffer
+     * 处理ByteBuffer
      *
      * @param byteBuffer
      */
@@ -118,25 +117,23 @@ public class NginxLogReader {
         byteBuffer.flip();
         byte[] bytes = new byte[byteBuffer.remaining()];
         byteBuffer.get(bytes);
-        byte[] mergeBytes = mergeArray(bytes, leftBytes);
-        int remark = -1;
-        int i = 0;
-        for (; i < mergeBytes.length; i++) {
-            if (mergeBytes[i] == '\n') {
-                String str = new String(mergeBytes, remark + 1, i - remark, this.charset);
+        byteBuffer.clear();
+        for ( int i = 0;i < bytes.length; i++) {
+            if (bytes[i] == '\n') {
+                String str = new String(byteWrap.getBytes(),0, byteWrap.size()).trim();
                 handlerIP(str,fileWriter);
-                remark = i;
+                byteWrap.clear();
+            }else{
+                if(Check.isNull(byteWrap)){
+                    byteWrap = new ByteWrap(1024*1024*2);
+                }
+                byteWrap.addByte(bytes[i]);
             }
         }
-        if (remark != i) {
-            leftBytes = new byte[i - remark - 1];
-            System.arraycopy(mergeBytes, remark + 1, leftBytes, 0, i - remark - 1);
-        }
-        byteBuffer.clear();
     }
 
     /**
-     * ����IP
+     * 处理IP
      *
      * @param str
      */
@@ -147,30 +144,5 @@ public class NginxLogReader {
         }
     }
 
-    /**
-     * ��������byte�ϲ�����
-     * @param from
-     * @param to
-     * @return
-     */
-    public byte[] mergeArray(byte[] from, byte[] to) {
-        int fs = from.length;
-        if (fs == 0) {
-            return to;
-        }
-        byte[] temp = null;
-        if (Check.isNull(to)) {
-            temp = new byte[fs];
-            System.arraycopy(from, 0, temp, 0, fs);
-            return temp;
-        }
-        int ts = to.length;
-        temp = new byte[fs + ts];
-        if (ts != 0) {
-            System.arraycopy(to, 0, temp, 0, ts);
-        }
-        System.arraycopy(from, 0, temp, ts, fs);
-        return temp;
-    }
 
 }

@@ -28,6 +28,8 @@ public class NginxLogReaderWoker implements Callable<LogHalfPack> {
 
     private String fileName;
 
+    private String resultPath;
+
     private Map<String,String> ipMap;
 
     public static final String DEFAULT_CHARSET = "UTF-8";
@@ -35,12 +37,13 @@ public class NginxLogReaderWoker implements Callable<LogHalfPack> {
 
     FileWriter fileWriter;
 
-    public NginxLogReaderWoker(long startSize,long endSize,String fileName,Map<String,String> ipMap){
+    public NginxLogReaderWoker(long startSize,long endSize,String fileName,Map<String,String> ipMap,String resultPath){
         this.startSize = startSize;
         this.endSize = endSize;
         this.fileName = fileName;
         this.ipMap = ipMap;
         logHalfPack = new LogHalfPack();
+        this.resultPath = resultPath;
     }
 
 
@@ -50,7 +53,7 @@ public class NginxLogReaderWoker implements Callable<LogHalfPack> {
             if (!Check.isFileExist(fileName)) {
                 throw new FileNotFoundException("File not found:" + fileName);
             }
-            fileWriter = new FileWriter("E:\\nginxlog\\result.txt");
+            fileWriter = new FileWriter(resultPath,true);
             RandomAccessFile fileAccess = new RandomAccessFile(fileName, "r");
             fileChannel = fileAccess.getChannel();
             int _readSize = DEFAULT_READ_SIZE;
@@ -58,19 +61,19 @@ public class NginxLogReaderWoker implements Callable<LogHalfPack> {
             long totalReadTimes = (long) Math.ceil(fileSize / DEFAULT_READ_SIZE);
             long readTimes = 0;
             long cursorPoint;
-            ByteBuffer byteBuffer = ByteBuffer.allocate(DEFAULT_READ_SIZE);
-            MappedByteBuffer mappedByteBuffer = null;
+            ByteBuffer byteBuffer = ByteBuffer.allocateDirect(DEFAULT_READ_SIZE);
             while (totalReadTimes > -1) {
                 cursorPoint = startSize + readTimes * _readSize;
                 if (totalReadTimes == 0) {
                     _readSize = (int) (endSize - cursorPoint);
                 }
-                mappedByteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, cursorPoint, _readSize);
-                byteBuffer.put(mappedByteBuffer);
-                handlerByteBuffer(byteBuffer);
+                if(_readSize<=0){
+                    break;
+                }
+                fileChannel.read(byteBuffer,cursorPoint);
+                handlerByteBuffer(byteBuffer, _readSize);
                 totalReadTimes--;
                 readTimes++;
-                System.out.println(startSize+"read size:"+cursorPoint);
             }
             logHalfPack.setTailWrap(byteWrap);
         } finally {
@@ -84,9 +87,9 @@ public class NginxLogReaderWoker implements Callable<LogHalfPack> {
         return logHalfPack;
     }
 
-    private void handlerByteBuffer(ByteBuffer byteBuffer) throws IOException {
+    private void handlerByteBuffer(ByteBuffer byteBuffer,int size) throws IOException {
         byteBuffer.flip();
-        byte[] bytes = new byte[byteBuffer.remaining()];
+        byte[] bytes = new byte[size];
         byteBuffer.get(bytes);
         byteBuffer.clear();
         for ( int i = 0;i < bytes.length; i++) {
