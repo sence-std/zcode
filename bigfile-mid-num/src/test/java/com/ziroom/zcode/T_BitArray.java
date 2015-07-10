@@ -12,13 +12,6 @@ import com.ziroom.zcode.bigfile.handler.BitArray;
 import org.junit.Test;
 
 /**
- * <p></p>
- * <p/>
- * <PRE>
- * <BR>	修改记录
- * <BR>-----------------------------------------------
- * <BR>	修改日期			修改人			修改内容
- * </PRE>
  *
  * @author sence
  * @version 1.0

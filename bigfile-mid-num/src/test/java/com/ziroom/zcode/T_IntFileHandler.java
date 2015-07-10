@@ -12,14 +12,16 @@ public class T_IntFileHandler {
 
     @Test
     public void testInt() throws ExecutionException, InterruptedException {
+        long t1 = System.currentTimeMillis();
         String[] files = new String[20];
-        String fileDir = "E:\\intfile\\";
+        String fileDir = "F:\\intfile\\";
         for (int i = 0; i < files.length; i++) {
             files[i] = fileDir.concat("file").concat(String.valueOf(i)).concat(".txt");
         }
         IntFileHandler fileHandler = new IntFileHandler(files.length);
         long num = fileHandler.sumMidNum(files);
         System.out.println(num);
+        System.out.println((System.currentTimeMillis()-t1));
     }
 
 }

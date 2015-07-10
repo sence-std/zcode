@@ -47,12 +47,10 @@ public class IntFileHandler {
                 count += 1;
             }
         }
-        //System.out.println(count);
         int startNum = getStartNum(count);
         int endNum = startNum + 99;
         long sumNum = 0;
         count = 0;
-        //System.out.println(startNum + "-" + endNum);
         for (int i = 0; i < Integer.MAX_VALUE; i++) {
             if (bitArray.getBit(i) == 1) {
                 count += 1;
@@ -62,7 +60,6 @@ public class IntFileHandler {
                 sumNum += i;
             }
         }
-        //System.out.println(System.currentTimeMillis() - t1);
         return sumNum;
     }
 

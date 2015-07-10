@@ -13,7 +13,7 @@ import java.nio.channels.FileChannel;
 import java.util.concurrent.Callable;
 
 /**
- * ��ȡ�ļ�д����λ����
+ * 处理单个文件计算线程
  * Created by sence on 2015/6/27.
  */
 public class ReaderIntFileWorker implements Callable<Boolean> {
@@ -29,7 +29,7 @@ public class ReaderIntFileWorker implements Callable<Boolean> {
     }
 
     /**
-     * �����ļ�
+     * 回调执行
      * @return
      * @throws Exception
      */
@@ -41,25 +41,12 @@ public class ReaderIntFileWorker implements Callable<Boolean> {
             }
             RandomAccessFile fileAccess = new RandomAccessFile(file, "r");
             fileChannel = fileAccess.getChannel();
-            int _readSize = DEFAULT_SIZE;
-            long fileSize = fileChannel.size();
-            long totalReadTimes = (long) Math.ceil(fileSize /DEFAULT_SIZE);
-            long readTimes = 0;
-            long cursorPoint;
-            MappedByteBuffer mappedByteBuffer = null;
             ByteBuffer byteBuffer = ByteBuffer.allocate(DEFAULT_SIZE);
-            while (totalReadTimes > -1) {
-                long t1 = System.currentTimeMillis();
-                cursorPoint = readTimes * _readSize;
-                if (totalReadTimes == 0) {
-                    _readSize = (int) (fileSize - cursorPoint);
-                }
-                mappedByteBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, cursorPoint, _readSize);
-                byteBuffer.put(mappedByteBuffer);
+            int length = 0;
+            byteBuffer.clear();
+            while (length != -1) {
+                length = fileChannel.read(byteBuffer);
                 handlerByteBuffer(byteBuffer);
-                totalReadTimes--;
-                readTimes++;
-                System.out.println(file+"-"+(System.currentTimeMillis()-t1));
             }
             return true;
         } finally {
@@ -70,13 +57,12 @@ public class ReaderIntFileWorker implements Callable<Boolean> {
     }
 
     /**
-     * ����byteBuffer
+     * 处理byteBuffer
      * @param byteBuffer
      * @throws IOException
      */
     private void handlerByteBuffer(ByteBuffer byteBuffer) throws IOException {
         byteBuffer.flip();
-        long t1 = System.currentTimeMillis();
         byte[] bytes = new byte[byteBuffer.remaining()];
         byteBuffer.get(bytes);
         byteBuffer.clear();
@@ -92,6 +78,5 @@ public class ReaderIntFileWorker implements Callable<Boolean> {
                 byteWrap.addByte(bytes[i]);
             }
         }
-        System.out.println("--"+(System.currentTimeMillis()-t1));
     }
 }

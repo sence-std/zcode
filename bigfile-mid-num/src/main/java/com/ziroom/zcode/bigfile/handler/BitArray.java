@@ -12,9 +12,9 @@ package com.ziroom.zcode.bigfile.handler;
  * <p></p>
  * <p/>
  * <PRE>
- * <BR>	ĞŞ¸Ä¼ÇÂ¼
+ * <BR>	ä¿®æ”¹è®°å½•
  * <BR>-----------------------------------------------
- * <BR>	ĞŞ¸ÄÈÕÆÚ			ĞŞ¸ÄÈË			ĞŞ¸ÄÄÚÈİ
+ * <BR>	ä¿®æ”¹æ—¥æœŸ			ä¿®æ”¹äºº			ä¿®æ”¹å†…å®¹
  * </PRE>
  *
  * @author sence
@@ -23,7 +23,7 @@ package com.ziroom.zcode.bigfile.handler;
  */
 public class BitArray {
 
-    //ÓÃÓÚÉèÖÃ»òÕßÌáÈ¡intÀàĞÍµÄÊı¾İµÄÄ³Ò»Î»(bit)µÄÖµÊ±Ê¹ÓÃ
+    //ç”¨äºè®¾ç½®æˆ–è€…æå–intç±»å‹çš„æ•°æ®çš„æŸä¸€ä½(bit)çš„å€¼æ—¶ä½¿ç”¨
     private final static int[] bitValue = {
             0x80000000,//10000000 00000000 00000000 00000000
             0x40000000,//01000000 00000000 00000000 00000000
@@ -63,28 +63,28 @@ public class BitArray {
 
     public BitArray(int length) {
         if (length < 0) {
-            throw new IllegalArgumentException("length±ØĞë´óÓÚÁã£¡");
+            throw new IllegalArgumentException("lengthå¿…é¡»å¤§äºé›¶ï¼");
         }
         bits = new int[length / 32 + (length % 32 > 0 ? 1 : 0)];
         this.length = length;
     }
 
-    //È¡indexÎ»µÄÖµ
+    //å–indexä½çš„å€¼
     public int getBit(int index) {
         if (index < 0 || index > length) {
-            throw new IllegalArgumentException("length±ØĞë´óÓÚÁãĞ¡ÓÚ" + length);
+            throw new IllegalArgumentException("lengthå¿…é¡»å¤§äºé›¶å°äº" + length);
         }
         int intData = bits[index / 32];
         return (intData & bitValue[index % 32]) >>> (32 - index % 32 - 1);
     }
 
-    //ÉèÖÃindexÎ»µÄÖµ£¬Ö»ÄÜÎª0»òÕß1
+    //è®¾ç½®indexä½çš„å€¼ï¼Œåªèƒ½ä¸º0æˆ–è€…1
     public void setBit(int index, int value) {
         if (index < 0 || index > length) {
-            throw new IllegalArgumentException("length±ØĞë´óÓÚÁãĞ¡ÓÚ" + length);
+            throw new IllegalArgumentException("lengthå¿…é¡»å¤§äºé›¶å°äº" + length);
         }
         if (value != 1 && value != 0) {
-            throw new IllegalArgumentException("value±ØĞëÎª0»òÕß1");
+            throw new IllegalArgumentException("valueå¿…é¡»ä¸º0æˆ–è€…1");
         }
         int intData = bits[index / 32];
         if (value == 1) {
