@@ -12,7 +12,7 @@ public class FileGenertor {
 
 
     /**
-     * 生成文件
+     * 鐢熶骇鏂囦欢
      *
      * @param files
      * @return
