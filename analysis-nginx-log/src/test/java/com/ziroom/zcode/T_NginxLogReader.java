@@ -16,14 +16,6 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 /**
- * <p></p>
- * <p/>
- * <PRE>
- * <BR>	�޸ļ�¼
- * <BR>-----------------------------------------------
- * <BR>	�޸�����			�޸���			�޸�����
- * </PRE>
- *
  * @author sence
  * @version 1.0
  * @since 1.0

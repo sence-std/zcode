@@ -41,12 +41,18 @@ public class ByteWrap {
         this.bytes[size] = byt;
         this.size += 1;
     }
-
     /**
      * clear
      */
     public void clear(){
         this.size = 0;
+    }
+
+    /**
+     * 不为空
+     */
+    public boolean isEmpty(){
+        return size() == 0;
     }
 
 }
