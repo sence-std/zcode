@@ -19,52 +19,64 @@ import java.util.concurrent.Future;
  */
 public class NginxLogHandler {
 
+    public static void main(String[] args) {
+        try {
+            long t1 = System.currentTimeMillis();
+            NginxLogHandler handler = new NginxLogHandler();
+            handler.handlerNginxLog("/home/ziroom/A1/data", 4, "/home/ziroom/A1/ip", "/home/ziroom/A1/result");
+            System.out.println(System.currentTimeMillis() - t1);
+        } catch (Exception e) {
+            System.out.println("妈蛋，异常了...");
+        }
+
+    }
+
     /**
      *
      */
-    public void handlerNginxLog(String filePath,int blockNum,String ipPath,String resultPath) throws IOException, ExecutionException, InterruptedException {
+    public void handlerNginxLog(String filePath, int blockNum, String ipPath, String resultPath) throws IOException, ExecutionException, InterruptedException {
         File file = new File(filePath);
         long length = file.length();
         int block = blockNum;
         long blockSize = 0;
-        if(length < block){
+        if (length < block) {
             block = 1;
             blockSize = length;
-        }else {
+        } else {
             blockSize = (long) Math.ceil(length / block);
         }
         File rfile = new File(resultPath);
-        if(rfile.exists()){
+        if (rfile.exists()) {
             rfile.delete();
         }
         AnalysisIPLoader ipLoader = new AnalysisIPLoader();
-        Map<String,String> map = ipLoader.loadAnalysisIP(ipPath);
+        Map<String, String> map = ipLoader.loadAnalysisIP(ipPath);
         ExecutorService executorService = Executors.newFixedThreadPool(block);
         Future<LogHalfPack>[] futures = new Future[block];
-        FileWriter fileWriter = new FileWriter(resultPath,true);
-        for (int i=0;i<block;i++){
-            long startSize = i*blockSize;
-            long endSize = (i+1)*blockSize;
-            if(i == block-1){
+        FileWriter fileWriter = new FileWriter(resultPath, true);
+        for (int i = 0; i < block; i++) {
+            long startSize = i * blockSize;
+            long endSize = (i + 1) * blockSize;
+            if (i == block - 1) {
                 endSize = length;
             }
-            futures[i] = executorService.submit(new NginxLogReaderWoker(startSize, endSize, filePath, map,resultPath,fileWriter));
+            futures[i] = executorService.submit(new NginxLogReaderWoker(startSize, endSize, filePath, map, fileWriter));
         }
         List<LogHalfPack> logHalfPacks = new ArrayList<LogHalfPack>();
-        for (int i = 0;i<block;i++){
+        for (int i = 0; i < block; i++) {
             LogHalfPack pack = futures[i].get();
             logHalfPacks.add(pack);
         }
         executorService.shutdown();
         ByteWrap footerWrap = null;
-        for(LogHalfPack lp:logHalfPacks){
+        for (LogHalfPack lp : logHalfPacks) {
             byte[] bytes = null;
-            if(Check.isNull(footerWrap) || footerWrap.isEmpty()){
+            if (Check.isNull(footerWrap) || footerWrap.isEmpty()) {
                 bytes = lp.getHeaderByte().getBytes();
-            }else{
-                bytes = mergeArray(footerWrap.getBytes(),lp.getHeaderByte().getBytes());
+            } else {
+                bytes = mergeArray(footerWrap.getBytes(), lp.getHeaderByte().getBytes());
             }
-            if(!Check.isNull(bytes)) {
+            if (!Check.isNull(bytes)) {
                 handlerLogHalfBytes(bytes, map, fileWriter);
             }
         }
@@ -72,11 +84,11 @@ public class NginxLogHandler {
         fileWriter.close();
     }
 
-    public void handlerLogHalfBytes(byte bytes[],Map<String,String> ipMap,FileWriter fileWriter) throws IOException {
+    public void handlerLogHalfBytes(byte bytes[], Map<String, String> ipMap, FileWriter fileWriter) throws IOException {
         String str = new String(bytes);
         String[] strs = str.split(" ");
         if (ipMap.get(strs[0]) != null) {
-            fileWriter.write(strs[6]);
+            fileWriter.write(strs[0]+strs[5]+"\n");
         }
     }
 

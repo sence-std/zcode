@@ -27,10 +27,11 @@ public class LogHalfPack {
         this.tailWrap = tailWrap;
     }
 
-    public boolean isHeaderNull(){
+    public boolean isHeaderNull() {
         return Check.isNull(headerByte);
     }
-    public boolean isTailNull(){
+
+    public boolean isTailNull() {
         return Check.isNull(tailWrap);
     }
 }

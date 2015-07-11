@@ -15,9 +15,9 @@ import java.util.Collection;
  * <p></p>
  * <p/>
  * <PRE>
- * <BR>	ÐÞ¸Ä¼ÇÂ¼
+ * <BR>	ï¿½Þ¸Ä¼ï¿½Â¼
  * <BR>-----------------------------------------------
- * <BR>	ÐÞ¸ÄÈÕÆÚ			ÐÞ¸ÄÈË			ÐÞ¸ÄÄÚÈÝ
+ * <BR>	ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½			ï¿½Þ¸ï¿½ï¿½ï¿½			ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½
  * </PRE>
  *
  * @author sence
@@ -28,7 +28,7 @@ public class Check {
 
 
     /**
-     * ÅÐ¶Ï¶ÔÏóÊÇ·ñÎª¿Õ
+     * ï¿½Ð¶Ï¶ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Îªï¿½ï¿½
      *
      * @param obj
      * @return boolean
@@ -38,7 +38,7 @@ public class Check {
     }
 
     /**
-     * ÅÐ¶ÏÊÇ·ñÊÇ¿Õ×Ö·û´®
+     * ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½Ç¿ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
      *
      * @param str
      * @return
@@ -54,7 +54,7 @@ public class Check {
     }
 
     /**
-     * ÅÐ¶ÏÊÇ·ñÊÇ¿Õ¼¯ºÏ
+     * ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½Ç¿Õ¼ï¿½ï¿½ï¿½
      *
      * @param collect
      * @return
@@ -72,16 +72,16 @@ public class Check {
         return false;
     }
 
-    public static boolean isFileExist(String path){
-        if(isNull(path)) return false;
+    public static boolean isFileExist(String path) {
+        if (isNull(path)) return false;
         File file = new File(path);
-        if(!file.exists()) return false;
+        if (!file.exists()) return false;
         file = null;
         return true;
     }
 
     /**
-     * ÅÐ¶ÏÊÇ·ñÊÇ¿ÕÊý×é
+     * ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½
      *
      * @param objs
      * @return

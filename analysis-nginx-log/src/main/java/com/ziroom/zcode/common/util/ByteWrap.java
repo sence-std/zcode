@@ -9,49 +9,48 @@ public class ByteWrap {
     private int size;
 
     /**
-     *
      * @param byteLength
      */
-    public ByteWrap(int byteLength){
+    public ByteWrap(int byteLength) {
         bytes = new byte[byteLength];
         size = 0;
     }
 
     /**
      * getSize
+     *
      * @return
      */
-    public int size(){
+    public int size() {
         return size;
     }
 
     /**
-     *
      * @return
      */
-    public byte[] getBytes(){
+    public byte[] getBytes() {
         return this.bytes;
     }
 
     /**
-     *
      * @param byt
      */
-    public void addByte(byte byt){
+    public void addByte(byte byt) {
         this.bytes[size] = byt;
         this.size += 1;
     }
+
     /**
      * clear
      */
-    public void clear(){
+    public void clear() {
         this.size = 0;
     }
 
     /**
      * 不为空
      */
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return size() == 0;
     }
 

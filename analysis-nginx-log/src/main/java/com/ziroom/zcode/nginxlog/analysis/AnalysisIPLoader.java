@@ -30,7 +30,7 @@ public class AnalysisIPLoader {
         try {
             reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             String line = null;
-            ipmap = new HashMap<String,String>();
+            ipmap = new HashMap<String, String>();
             while ((line = reader.readLine()) != null) {
                 ipmap.put(line, line);
             }

@@ -11,7 +11,10 @@ package com.ziroom.zcode.nginxlog.analysis;
 import com.ziroom.zcode.common.util.ByteWrap;
 import com.ziroom.zcode.common.util.Check;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.Map;
@@ -24,7 +27,7 @@ import java.util.Map;
 public class NginxLogReader {
 
     public static final String DEFAULT_CHARSET = "UTF-8";
-    public static final int DEFAULT_READ_SIZE = 1024*1024*20; //10MB
+    public static final int DEFAULT_READ_SIZE = 1024 * 1024 * 20; //10MB
 
     private String charset;
     private int readSize;
@@ -56,10 +59,10 @@ public class NginxLogReader {
      *
      * @param logFilePath
      */
-    public void readFromLogFile(String logFilePath,String resultPath,String findIpFilePath) throws IOException {
+    public void readFromLogFile(String logFilePath, String resultPath, String findIpFilePath) throws IOException {
         initFindIp(findIpFilePath);
         FileChannel fileChannel = null;
-        FileWriter fileWriter = new FileWriter(resultPath,true);
+        FileWriter fileWriter = new FileWriter(resultPath, true);
         try {
             if (!Check.isFileExist(logFilePath)) {
                 throw new FileNotFoundException("File not found:" + logFilePath);
@@ -78,7 +81,7 @@ public class NginxLogReader {
                     _readSize = (int) (fileSize - cursorPoint);
                 }
                 fileChannel.read(byteBuffer);
-                handlerByteBuffer(byteBuffer,fileWriter);
+                handlerByteBuffer(byteBuffer, fileWriter);
                 totalReadTimes--;
                 readTimes++;
             }
@@ -105,19 +108,19 @@ public class NginxLogReader {
      *
      * @param byteBuffer
      */
-    private void handlerByteBuffer(ByteBuffer byteBuffer,FileWriter fileWriter) throws IOException {
+    private void handlerByteBuffer(ByteBuffer byteBuffer, FileWriter fileWriter) throws IOException {
         byteBuffer.flip();
         byte[] bytes = new byte[byteBuffer.remaining()];
         byteBuffer.get(bytes);
         byteBuffer.clear();
-        for ( int i = 0;i < bytes.length; i++) {
+        for (int i = 0; i < bytes.length; i++) {
             if (bytes[i] == '\n') {
-                String str = new String(byteWrap.getBytes(),0, byteWrap.size()).trim();
-                handlerIP(str,fileWriter);
+                String str = new String(byteWrap.getBytes(), 0, byteWrap.size()).trim();
+                handlerIP(str, fileWriter);
                 byteWrap.clear();
-            }else{
-                if(Check.isNull(byteWrap)){
-                    byteWrap = new ByteWrap(1024*1024*2);
+            } else {
+                if (Check.isNull(byteWrap)) {
+                    byteWrap = new ByteWrap(1024 * 1024 * 2);
                 }
                 byteWrap.addByte(bytes[i]);
             }
@@ -129,10 +132,10 @@ public class NginxLogReader {
      *
      * @param str
      */
-    private void handlerIP(String str,FileWriter fileWriter) throws IOException {
+    private void handlerIP(String str, FileWriter fileWriter) throws IOException {
         String[] strs = str.split(" ");
         if (ipMap.get(strs[0]) != null) {
-           fileWriter.write(strs[6]+"\n");
+            fileWriter.write(strs[6] + "\n");
         }
     }
 

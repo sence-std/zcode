@@ -25,15 +25,15 @@ public class T_NginxLogReader {
     @Test
     public void testLogReader() throws IOException {
         NginxLogReader nginxLogReader = new NginxLogReader();
-        nginxLogReader.readFromLogFile("F:\\nginxlog\\access_log2.log","F:\\nginxlog\\result.txt","F:\\nginxlog\\ip.txt");
+        nginxLogReader.readFromLogFile("F:\\nginxlog\\access_log2.log", "F:\\nginxlog\\result.txt", "F:\\nginxlog\\ip.txt");
     }
 
     @Test
     public void testNginxLog() throws InterruptedException, ExecutionException, IOException {
         long t1 = System.currentTimeMillis();
         NginxLogHandler handler = new NginxLogHandler();
-        handler.handlerNginxLog("F:\\nginxlog\\access_log2.log",4,"F:\\nginxlog\\ip.txt","F:\\nginxlog\\result.txt");
-        System.out.println(System.currentTimeMillis()-t1);
+        handler.handlerNginxLog("F:\\nginxlog\\access_log2.log", 4, "F:\\nginxlog\\ip.txt", "F:\\nginxlog\\result.txt");
+        System.out.println(System.currentTimeMillis() - t1);
     }
 
 }
