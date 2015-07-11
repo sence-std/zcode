@@ -3,10 +3,7 @@ package com.ziroom.zcode.nginxlog.analysis;
 import com.ziroom.zcode.common.util.ByteWrap;
 import com.ziroom.zcode.common.util.Check;
 
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -37,13 +34,14 @@ public class NginxLogReaderWoker implements Callable<LogHalfPack> {
 
     FileWriter fileWriter;
 
-    public NginxLogReaderWoker(long startSize,long endSize,String fileName,Map<String,String> ipMap,String resultPath){
+    public NginxLogReaderWoker(long startSize,long endSize,String fileName,Map<String,String> ipMap,String resultPath,FileWriter fileWriter){
         this.startSize = startSize;
         this.endSize = endSize;
         this.fileName = fileName;
         this.ipMap = ipMap;
         logHalfPack = new LogHalfPack();
         this.resultPath = resultPath;
+        this.fileWriter = fileWriter;
     }
 
 
@@ -53,7 +51,7 @@ public class NginxLogReaderWoker implements Callable<LogHalfPack> {
             if (!Check.isFileExist(fileName)) {
                 throw new FileNotFoundException("File not found:" + fileName);
             }
-            fileWriter = new FileWriter(resultPath,true);
+           // fileWriter = new FileWriter(resultPath,true);
             RandomAccessFile fileAccess = new RandomAccessFile(fileName, "r");
             fileChannel = fileAccess.getChannel();
             int _readSize = DEFAULT_READ_SIZE;
@@ -79,9 +77,6 @@ public class NginxLogReaderWoker implements Callable<LogHalfPack> {
         } finally {
             if (!Check.isNull(fileChannel)) {
                 fileChannel.close();
-            }
-            if (!Check.isNull(fileWriter)) {
-                fileWriter.close();
             }
         }
         return logHalfPack;

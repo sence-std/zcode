@@ -17,14 +17,6 @@ import java.nio.channels.FileChannel;
 import java.util.Map;
 
 /**
- * <p>锟斤拷取nginx锟斤拷志</p>
- * <p/>
- * <PRE>
- * <BR>	锟睫改硷拷录
- * <BR>-----------------------------------------------
- * <BR>	锟睫革拷锟斤拷锟斤拷			锟睫革拷锟斤拷			锟睫革拷锟斤拷锟斤拷
- * </PRE>
- *
  * @author sence
  * @version 1.0
  * @since 1.0

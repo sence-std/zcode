@@ -33,17 +33,22 @@ public class NginxLogHandler {
         }else {
             blockSize = (long) Math.ceil(length / block);
         }
+        File rfile = new File(resultPath);
+        if(rfile.exists()){
+            rfile.delete();
+        }
         AnalysisIPLoader ipLoader = new AnalysisIPLoader();
         Map<String,String> map = ipLoader.loadAnalysisIP(ipPath);
         ExecutorService executorService = Executors.newFixedThreadPool(block);
         Future<LogHalfPack>[] futures = new Future[block];
+        FileWriter fileWriter = new FileWriter(resultPath,true);
         for (int i=0;i<block;i++){
             long startSize = i*blockSize;
             long endSize = (i+1)*blockSize;
             if(i == block-1){
                 endSize = length;
             }
-            futures[i] = executorService.submit(new NginxLogReaderWoker(startSize, endSize, filePath, map,resultPath));
+            futures[i] = executorService.submit(new NginxLogReaderWoker(startSize, endSize, filePath, map,resultPath,fileWriter));
         }
         List<LogHalfPack> logHalfPacks = new ArrayList<LogHalfPack>();
         for (int i = 0;i<block;i++){
@@ -52,7 +57,6 @@ public class NginxLogHandler {
         }
         executorService.shutdown();
         ByteWrap footerWrap = null;
-        FileWriter fileWriter = new FileWriter(resultPath,true);
         for(LogHalfPack lp:logHalfPacks){
             byte[] bytes = null;
             if(Check.isNull(footerWrap) || footerWrap.isEmpty()){
